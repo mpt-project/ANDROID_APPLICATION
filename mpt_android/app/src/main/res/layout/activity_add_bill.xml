@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.notkink.mpt_android.addBill"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:text="Dodaj Paragon"
+            android:layout_gravity="center"
+            android:textColor="@color/textColorPrimary"
+            android:fontFamily="@font/luckiestguy_regular"
+            android:textSize="30sp"
+            android:id="@+id/toolbar_title" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+
+
+    <!-- App progress -->
+
+
+    <RelativeLayout
+        android:id="@+id/addBill_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/takenPhoto"
+            style="@style/myImageView"
+            android:layout_width="315sp"
+            android:layout_height="250sp"
+            android:layout_above="@+id/billName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="66dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_border" />
+
+        <EditText
+            android:id="@+id/billName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/warranty"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="57dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="none"
+            android:text="Nazwa paragonu"
+            android:textIsSelectable="true"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/warranty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/year"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="none"
+            android:text="Okres gwarancji"
+            android:textIsSelectable="true"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dateOfPurchase"
+            android:layout_alignEnd="@+id/warranty"
+            android:layout_marginBottom="33dp"
+            android:layout_marginEnd="59dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/billNameFill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_above="@+id/warranty"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/shopNameFill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="11dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/spin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/year"
+            android:layout_alignEnd="@+id/dateOfPurchaseFill"
+            android:layout_below="@+id/warranty"
+            android:entries="@array/years"></Spinner>
+
+
+        <EditText
+            android:id="@+id/shopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/shopNameFill"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="none"
+            android:text="Nazwa sklepu"
+            android:textIsSelectable="true"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/dateOfPurchaseFill"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:layout_above="@+id/shopName"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:inputType="none"
+            android:textIsSelectable="true"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/dateOfPurchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dateOfPurchaseFill"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="none"
+            android:text="Data zakupu"
+            android:textIsSelectable="true"
+            android:textSize="15sp" />
+
+
+        <ImageView
+            android:id="@+id/upload"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_alignEnd="@+id/billName"
+            android:layout_alignTop="@+id/openCamera"
+            app:srcCompat="@android:drawable/ic_menu_upload" />
+
+        <ImageView
+            android:id="@+id/openCamera"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_alignBottom="@+id/takenPhoto"
+            android:layout_marginBottom="92dp"
+            android:layout_toEndOf="@+id/billNameFill"
+            android:clickable="true"
+            android:onClick="takePhoto"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <ImageView
+            android:id="@+id/addDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/shopName"
+            android:layout_toEndOf="@+id/shopName"
+            android:clickable="true"
+            app:srcCompat="@drawable/icon_calendar" />
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/dateOfPurchase"
+            android:layout_alignBottom="@+id/dateOfPurchase"
+            android:layout_marginStart="39dp"
+            android:layout_toEndOf="@+id/shopNameFill"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/lato_regular"
+            android:text="Dodaj"
+            android:textColor="@color/textColorPrimary" />
+
+
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>
+
+
+
