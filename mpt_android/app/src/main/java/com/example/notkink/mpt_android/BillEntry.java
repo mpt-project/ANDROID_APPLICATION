@@ -3,6 +3,7 @@ package com.example.notkink.mpt_android;
 import android.graphics.Bitmap;
 import android.media.Image;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -13,9 +14,13 @@ public class BillEntry {
     private String shopName;
     private String billName;
     private Bitmap photo;
-    private Date purchaseDate;
+    private Calendar purchaseDate;
+    private String date;
     private int guaranteeDuration;
     private GuaranteeUnits guaranteeUnit;
+    private String year;
+    private String day;
+    private String month;
 
     public String getShopName() {
         return shopName;
@@ -35,11 +40,10 @@ public class BillEntry {
         this.photo = photo;
     }
 
-    public Date getPurchaseDate() {
+    public Calendar getPurchaseDate() {
         return purchaseDate;
     }
-
-    public void setPurchaseDate(Date purchaseDate) {
+    public void setPurchaseDate(Calendar purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
@@ -57,5 +61,37 @@ public class BillEntry {
 
     public void setGuaranteeUnit(GuaranteeUnits guaranteeUnit) {
         this.guaranteeUnit = guaranteeUnit;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 }

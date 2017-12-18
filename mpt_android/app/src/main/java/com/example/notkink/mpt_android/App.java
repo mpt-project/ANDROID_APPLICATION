@@ -7,6 +7,8 @@ import android.os.Looper;
 
 import com.example.notkink.mpt_android.upload.BillPleaseApiClient;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 
 public class App extends Application {
     private static Context context;
@@ -24,7 +26,11 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
-
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/lato-light.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         billPleaseApiClient = new BillPleaseApiClient("http://192.168.1.9:3000/");
         handler = new Handler(Looper.getMainLooper());
     }

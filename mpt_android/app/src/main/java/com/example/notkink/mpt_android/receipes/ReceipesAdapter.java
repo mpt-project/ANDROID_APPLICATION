@@ -1,4 +1,4 @@
-package com.example.notkink.mpt_android;
+package com.example.notkink.mpt_android.receipes;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,14 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.notkink.mpt_android.BillEntry;
+import com.example.notkink.mpt_android.R;
+import com.example.notkink.mpt_android.auth.Receipt;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
  * Created by Notkink on 20.11.2017.
  */
 
-public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
-    private List<BillEntry> billEntries;
+public class ReceipesAdapter extends ArrayAdapter<Receipt> {
+    private List<Receipt> billEntries;
     private Context mContext;
 
     // View lookup cache
@@ -27,7 +32,7 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
         ImageView thumbnail;
     }
 
-    public CustomArrayAdapter(List<BillEntry> entries, Context context) {
+    public ReceipesAdapter(List<Receipt> entries, Context context) {
         super(context, R.layout.row, entries);
         billEntries = entries;
         mContext = context;
@@ -36,9 +41,8 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        BillEntry entry = getItem(position);
+        Receipt entry = getItem(position);
         ViewHolder viewHolder;
-
 
         if (convertView == null) {
 
@@ -50,19 +54,20 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
             viewHolder.thumbnail = convertView.findViewById(R.id.thmbnailId);
 
 
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
 
         }
+        if (entry == null) return convertView;
 
-        viewHolder.title.setText(entry.getBillName());
-        viewHolder.description.setText(entry.getShopName());
+        viewHolder.title.setText(entry.name);
+        viewHolder.description.setText(entry.shop);
 //        viewHolder.description.setText( entry.getPurchaseDate().toString());
 //        viewHolder.info.setOnClickListener(this);
         viewHolder.thumbnail.setTag(position);
-        viewHolder.thumbnail.setImageBitmap(entry.getPhoto());
+        Picasso.with(mContext).load(entry.url)
+                .into(viewHolder.thumbnail);
         // Return the completed view to render on screen
         return convertView;
     }

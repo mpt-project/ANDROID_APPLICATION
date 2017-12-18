@@ -22,6 +22,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,11 +33,23 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.notkink.mpt_android.auth.AuthClient;
+import com.example.notkink.mpt_android.auth.User;
+import com.example.notkink.mpt_android.auth.UserRequest;
+import com.example.notkink.mpt_android.auth.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -65,8 +80,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private TextInputEditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ProgressBar progressBar;
 
 
+    private AuthClient authClient = new AuthClient();
 
 
     @Override
@@ -75,10 +92,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         // Set up the login form.
+        Button sign_up = findViewById(R.id.sign_up);
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
+        progressBar = findViewById(R.id.activity_login_progressbar);
         mPasswordView = findViewById(R.id.password);
+        boolean mCbShowPwd = false;
+        onCheckedChanged(mCbShowPwd);
+
+
+
+
         mPasswordView.setOnEditorActionListener(new TextInputEditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -91,6 +116,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         });
 
+
+
+        //Add onCheckedListener
+
+
+
+        sign_up.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(LoginActivity.this, Pop.class));
+
+
+            }
+        });
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -101,6 +142,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+
     }
 
     private void populateAutoComplete() {
@@ -109,6 +153,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    private void onCheckedChanged(boolean isChecked) {
+        if (!isChecked) {
+            //Show password
+            mPasswordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        } else {
+            //Hide password
+            mPasswordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        }
     }
 
     private boolean mayRequestContacts() {
@@ -146,13 +200,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    private void requestLogin(String email, String pass) {
+        showProgress(true);
+        authClient.loginUser(new UserRequest(new User(email, null, pass)))
+                .enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        showProgress(false);
+                        navigateToAppActivity();
+                    }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "Error occurred: "+String.valueOf(t), Toast.LENGTH_SHORT).show();
+                        showProgress(false);
+                    }
+                });
+    }
+
+    private void navigateToAppActivity() {
+        Intent intent = new Intent(this,AppActivity.class);
+        startActivity(new Intent(LoginActivity.this, AppActivity.class));
+    }
     private void attemptLogin() {
+
+//        navigateToAppActivity();
+
+
         if (mAuthTask != null) {
             return;
         }
@@ -193,13 +268,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-            startActivity(new Intent(LoginActivity.this, AppActivity.class));
 
-
+//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
+//
+            //todo:API ready
+//            requestLogin(email,password);
+            navigateToAppActivity();
         }
+
     }
 
     private boolean isEmailValid(String email) {

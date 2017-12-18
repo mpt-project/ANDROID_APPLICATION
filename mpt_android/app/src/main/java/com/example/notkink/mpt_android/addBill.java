@@ -60,6 +60,7 @@ public class addBill extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private final static int PICK_IMAGE = 100;
     private Uri imgUri;
+    private Calendar mainCalendar;
 
 
 
@@ -108,6 +109,7 @@ public class addBill extends AppCompatActivity {
                 DatePickerDialog dialog = new DatePickerDialog( addBill.this, mDateSetListener,
                         year,month,dayOfMonth);
                 dialog.show();
+                mainCalendar =  cal;
             }
         });
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -117,6 +119,7 @@ public class addBill extends AppCompatActivity {
                 String date = dayOfMonth + "/" + month + "/" + year;
                 purchaseDate.setText(date);
 
+
             }
         };
 
@@ -124,11 +127,10 @@ public class addBill extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                    //Toast.makeText(addBill.this, "Uzupelnij dane", Toast.LENGTH_SHORT).show();
 
-                    addItem(view);
+                    addItem(view, mainCalendar);
                     NavUtils.navigateUpFromSameTask(addBill.this);
-                    //new ImageUploader().uploadImage(toReducedImageSize(bitmap));
+                    new ImageUploader().uploadImage(toReducedImageSize(bitmap));
 
 
             }
@@ -158,12 +160,12 @@ public class addBill extends AppCompatActivity {
         return image;
 
     }
-    void setReducedImageSize() {
+    void setReducedImageSize(ImageView iv) {
 
 
 
-        int targetImageViewWidth = imgTakenPic.getWidth();
-        int targetImageViewHeight = imgTakenPic.getHeight();
+        int targetImageViewWidth = iv.getWidth();
+        int targetImageViewHeight = iv.getHeight();
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
@@ -176,7 +178,7 @@ public class addBill extends AppCompatActivity {
         bmOptions.inJustDecodeBounds = false;
 
         Bitmap photoReducedSize= BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
-        imgTakenPic.setImageBitmap(photoReducedSize);
+        iv.setImageBitmap(photoReducedSize);
 
 
 
@@ -195,7 +197,6 @@ public class addBill extends AppCompatActivity {
             e.printStackTrace();
         }
 
-       //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 
        startActivityForResult(intent, ACTIVITY_START_CAMERA_APP);
 
@@ -223,6 +224,12 @@ public class addBill extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imgUri = data.getData();
             imgTakenPic.setImageURI(imgUri);
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imgUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),imgUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if(requestCode == ACTIVITY_START_CAMERA_APP && resultCode == RESULT_OK) {
              //Toast.makeText(this, "Picture taken successfully", Toast.LENGTH_SHORT).show();
@@ -233,20 +240,12 @@ public class addBill extends AppCompatActivity {
              //imgTakenPic.setImageBitmap(photoCapturedBitmap);
 
             if (EasyPermissions.hasPermissions(this, galleryPermissions)) {
-                /*Bitmap*/ bitmap = (Bitmap) data.getExtras().get("data");
+                bitmap = (Bitmap) data.getExtras().get("data");
                 imgTakenPic.setImageBitmap(bitmap);
             } else {
                 EasyPermissions.requestPermissions(this, "Access for storage",
                         101, galleryPermissions);
             }
-
-//            if (EasyPermissions.hasPermissions(this, galleryPermissions)) {
-//                setReducedImageSize();
-//            } else {
-//                EasyPermissions.requestPermissions(this, "Access for storage",
-//                        101, galleryPermissions);
-//            }
-
 
 
 
@@ -254,29 +253,43 @@ public class addBill extends AppCompatActivity {
 
     }
 
-    public void addItem(View view) {
+
+    public void addItem(View view, Calendar calendar) {
 
         GuaranteeUnits unit = null;
         switch(String.valueOf(unitSpinner.getSelectedItem())){
             case "Rok":
-                unit = GuaranteeUnits.YEAR;
+                unit = GuaranteeUnits.lata;
                 break;
             case "Miesiac":
-                unit = GuaranteeUnits.MONTH;
+                unit = GuaranteeUnits.miesiace;
                 break;
             case "Dzien":
-                unit = GuaranteeUnits.DAY;
+                unit = GuaranteeUnits.dni;
                 break;
         }
         BillEntry be = new BillEntry();
+
         be.setGuaranteeDuration(Integer.parseInt(year.getText().toString()));
         be.setShopName(shopName.getText().toString());
         be.setBillName(billName.getText().toString());
         be.setGuaranteeUnit(unit);
         be.setPhoto(bitmap);
+        be.setDate(purchaseDate.getText().toString());
+        be.setPurchaseDate(calendar);
         BillEntriesCointener.billEntries.add(be);
+        splitDate(be);
 
 
+    }
+
+    void splitDate(BillEntry be){
+        String date = be.getDate();
+        String[] dateSplit = date.split("/");
+        for(String i : dateSplit){
+            //System.out.println(i);
+
+        }
     }
 
 
@@ -296,12 +309,5 @@ public class addBill extends AppCompatActivity {
     }
 }
 
- /*   @Override
-    public void onClick(View v) {
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            invokeCamera();
-        } else {
-            String[] permissionRequested = {Manifest.permission.CAMERA};
-            requestPermissions(permissionRequested, CAMERA_REQUEST_CODE);
-        }*/
+
 

@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name = "android:fontFamily">@font/lato_light</item>
+        <item name="android:fontFamily">@font/lato_light</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,7 +16,13 @@
 
     </style>
 
-    <style name="Toolbar" >
+    <style name="sign_up_theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Toolbar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/luckiestguy_regular</item>
         <item name="windowActionBar">false</item>
@@ -35,4 +41,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ToolbarFontPath" parent="AppTheme">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/luckiestguy_regular.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontPath" parent="android:TextAppearance">
+        <item name="fontPath">fonts/luckiestguy_regular.ttf</item>
+    </style>
 </resources>

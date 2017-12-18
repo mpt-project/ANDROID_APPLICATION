@@ -5,5 +5,5 @@ package com.example.notkink.mpt_android;
  */
 
 public enum GuaranteeUnits {
-    YEAR, MONTH, DAY;
+    lata , miesiace, dni;
 }

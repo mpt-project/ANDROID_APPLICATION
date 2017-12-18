@@ -6,22 +6,34 @@
     android:layout_height="match_parent"
     tools:context="com.example.notkink.mpt_android.AppActivity">
 
+    <!--<TextView-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:layout_below="@+id/toolbar_top_appactivity"-->
+        <!--android:text="TWOJE PARAGONY"-->
+        <!--android:gravity="center"-->
+        <!--android:id="@+id/activity_title"-->
+        <!--android:textAppearance="@style/TextAppearance.FontPath"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_top_appactivity"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:textAppearance="@style/TextAppearance.FontPath"
+        android:background="@color/colorPrimary"
+        >
 
 
         <TextView
 
+            android:textColor="@color/textColorPrimary"
+            style="@style/Toolbar"
             android:layout_width="wrap_content"
             android:layout_height="40sp"
             android:text="Twoje Paragony"
             android:layout_gravity="center"
-            android:textColor="@color/textColorPrimary"
-            android:fontFamily="@font/luckiestguy_regular"
             android:textSize="30sp"
             android:id="@+id/toolbar_title_appactivity" />
 
@@ -34,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="9"
-        android:layout_marginTop="?attr/actionBarSize"
 
         />
 
