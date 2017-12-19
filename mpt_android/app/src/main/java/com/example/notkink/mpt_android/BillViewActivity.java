@@ -77,6 +77,7 @@ public class BillViewActivity extends AppCompatActivity {
 
         //String date = extras.getString("dateOfPurchase");
         String dateOfPurchase = extras.getString("dateOfPurchaseString");
+
         String calculatedDays = extras.getString("dateCalculated");
         int timeOfGurantee = extras.getInt("timeOfGurantee");
         String guranteeUnit = extras.getString("guranteeUnit");
@@ -95,6 +96,7 @@ public class BillViewActivity extends AppCompatActivity {
         timeLeft.setText(timeleftString);
         expirationDateText.setText("Twoja gwarancja wygaśnie za ");
         expirationDate.setText(calculatedDays + " miesiące");
+
 
         //currentDate.setText(currentDateString);
 

@@ -29,7 +29,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.joda.time.DateTime;
+import org.joda.time.DurationFieldType;
 import org.joda.time.Months;
+import org.joda.time.ReadableInstant;
+import org.joda.time.base.BaseSingleFieldPeriod;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +75,8 @@ public class AppActivity extends ListActivity {
             }
         });
 
+
+
     }
 
     private void requestReceipts() {
@@ -87,7 +92,7 @@ public class AppActivity extends ListActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         //Receipt receipt = recipes.get(i);
-                        onListItemClicked2(i);
+
                     }
 
                 });
@@ -126,7 +131,7 @@ public class AppActivity extends ListActivity {
     private void onListItemClicked2(int i) {
 
 
-        //System.out.println("Clicked position "+i);
+
         Intent intent = new Intent(AppActivity.this, BillViewActivity.class);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         //zmieniec quality//
@@ -152,9 +157,8 @@ public class AppActivity extends ListActivity {
         intent.putExtra("billName", billName);
 
 
-
-
         String dateCalculated = calculateTheDate(purchaseDate, i, periodOfGuarantee);
+
         intent.putExtra("dateCalculated", dateCalculated);
         intent.putExtra("timeOfGurantee", periodOfGuarantee);
         intent.putExtra("guranteeUnit", guranteeUnit);
@@ -162,6 +166,8 @@ public class AppActivity extends ListActivity {
 
         startActivity(intent);
     }
+
+
     /*private void onListItemClicked(Receipt receipt) {
 
 
@@ -214,49 +220,29 @@ public class AppActivity extends ListActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String calculateTheDate(Calendar purchaseDate, int i, int periodofOfGuarantee) {
-        // trzeba wziasc liczbe dni i podzielic na miesiace i na lata
-        //TODO
-   /*     long calculatedDays = 2;
-        int months = 0;*/
+
+        int months = 0;
+
         calendarCurrentDate = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String currentDate = simpleDateFormat.format(calendarCurrentDate.getTime());
-        System.out.println(currentDate);
         purchaseDate = BillEntriesCointener.billEntries.get(i).getPurchaseDate();
-
         purchaseDate.add(Calendar.YEAR, periodofOfGuarantee);
-        String dateOfPurchasePlusGuarantee = simpleDateFormat.format(purchaseDate.getTime());
 
-
-
-        /*Date d1 = null;
-        Date d2 = null;*/
         DateTime start = new DateTime(calendarCurrentDate.getTime());
         DateTime end= new DateTime(purchaseDate.getTime());
-        int months;
+        System.out.println("przed przypisaniem month: " +months);
+        System.out.println("start: " + start);
+        System.out.println("end: " + end);
         months = Months.monthsBetween(start, end).getMonths();
 
+        System.out.println("po przypisaniem month: " + months);
+        purchaseDate.add(Calendar.YEAR, -periodofOfGuarantee);
 
-/*        try {
-            d1 = simpleDateFormat.parse(currentDate);
-            d2 = simpleDateFormat.parse(dateOfPurchasePlusGuarantee);
-            System.out.println(d1.toString() + "\n" + d2.toString());
-
-            long diff = d2.getTime() - d1.getTime();
-
-            int months = Months.monthBetween(d1, d2).getMonths();
-            //calculatedDays = diff / (30 * 24 * 60 * 60 * 1000);
-
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
         return String.valueOf(months);
+
     }
 
 
 }
+
