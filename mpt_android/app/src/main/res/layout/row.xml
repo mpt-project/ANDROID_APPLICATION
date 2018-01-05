@@ -2,12 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="5sp"
+    android:paddingBottom="5sp"
+    android:background="@drawable/shadow">
 
     <ImageView
         android:id="@+id/thmbnailId"
         android:layout_width="80sp"
         android:layout_height="80sp"
+        android:layout_marginLeft="5dp"
         tools:background="@color/colorPrimary" />
 
     <TextView
@@ -27,5 +31,20 @@
         android:layout_below="@id/titleId"
         android:layout_toRightOf="@id/thmbnailId"
         tools:text="paragon" />
+    <TextView
+        android:id="@+id/monthsLeft"
+        android:layout_width="100sp"
+        android:layout_height="40sp"
+        android:layout_marginLeft="270sp"
+        android:layout_marginTop="20sp"
+        android:fontFamily="@font/lato_regular"
+        tools:text="24 mies."
+        tools:background="@color/colorPrimary"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/textColorPrimary"
+
+        />
+
 
 </RelativeLayout>

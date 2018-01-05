@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import com.example.notkink.mpt_android.upload.ImageUploader;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,7 @@ public class addBill extends AppCompatActivity {
     private Button buttonAdd;
     private EditText year, shopName, billName;
     private EditText purchaseDate;
+    private TextView guaranteeDuration;
     private Spinner unitSpinner;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private final static int PICK_IMAGE = 100;
@@ -82,6 +85,7 @@ public class addBill extends AppCompatActivity {
         shopName = findViewById(R.id.shopNameFill);
         billName = findViewById(R.id.billNameFill);
         purchaseDate = findViewById(R.id.dateOfPurchaseFill); // pole do wpisanie daty z kalendarza
+
         unitSpinner = findViewById(R.id.spin);
         buttonAdd = findViewById(R.id.add);
         upload = findViewById(R.id.upload);
@@ -135,9 +139,6 @@ public class addBill extends AppCompatActivity {
 
             }
         });
-
-
-
 
     }
 
@@ -277,6 +278,8 @@ public class addBill extends AppCompatActivity {
         be.setPhoto(bitmap);
         be.setDate(purchaseDate.getText().toString());
         be.setPurchaseDate(calendar);
+        AppActivity appA = new AppActivity();
+        be.setBillEntryMonthsLeft(appA.calculateTheDate2(be.getPurchaseDate(),be.getGuaranteeDuration()));
         BillEntriesCointener.billEntries.add(be);
         splitDate(be);
 
@@ -286,10 +289,7 @@ public class addBill extends AppCompatActivity {
     void splitDate(BillEntry be){
         String date = be.getDate();
         String[] dateSplit = date.split("/");
-        for(String i : dateSplit){
-            //System.out.println(i);
 
-        }
     }
 
 

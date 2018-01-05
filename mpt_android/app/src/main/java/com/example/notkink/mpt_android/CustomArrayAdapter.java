@@ -1,8 +1,11 @@
 package com.example.notkink.mpt_android;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
         TextView title;
         TextView description;
         ImageView thumbnail;
+        TextView monthsLeft;
     }
 
     public CustomArrayAdapter(List<BillEntry> entries, Context context) {
@@ -48,6 +52,7 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
             viewHolder.title = convertView.findViewById(R.id.titleId);
             viewHolder.description = convertView.findViewById(R.id.descriptionId);
             viewHolder.thumbnail = convertView.findViewById(R.id.thmbnailId);
+            viewHolder.monthsLeft = convertView.findViewById(R.id.monthsLeft);
 
 
 
@@ -61,6 +66,18 @@ public class CustomArrayAdapter extends ArrayAdapter<BillEntry>  {
         viewHolder.description.setText(entry.getShopName());
 //        viewHolder.description.setText( entry.getPurchaseDate().toString());
 //        viewHolder.info.setOnClickListener(this);
+
+        if(Integer.parseInt(entry.getBillEntryMonthsLeft()) < 5) {
+             viewHolder.monthsLeft.setBackgroundColor(ContextCompat.getColor(mContext, R.color.red));
+        }else if(Integer.parseInt(entry.getBillEntryMonthsLeft()) < 9){
+            viewHolder.monthsLeft.setBackgroundColor(ContextCompat.getColor(mContext, R.color.orange));
+
+
+        } else{
+            viewHolder.monthsLeft.setBackgroundColor(ContextCompat.getColor(mContext, R.color.green));
+        }
+
+        viewHolder.monthsLeft.setText(entry.getBillEntryMonthsLeft() + " " + "mies.");
         viewHolder.thumbnail.setTag(position);
         viewHolder.thumbnail.setImageBitmap(entry.getPhoto());
         // Return the completed view to render on screen

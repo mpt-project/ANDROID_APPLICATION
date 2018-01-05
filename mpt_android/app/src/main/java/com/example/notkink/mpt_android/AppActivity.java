@@ -50,6 +50,7 @@ public class AppActivity extends ListActivity {
     private SimpleDateFormat simpleDateFormat;
     private ListView listView;
     private AuthClient authClient = new AuthClient();
+    private TextView monthsLeft;
 
 
     @Override
@@ -65,6 +66,7 @@ public class AppActivity extends ListActivity {
         listView = getListView();
         //requestReceipts();
         ImageView imageView = findViewById(R.id.imageView);
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewBill);
@@ -110,7 +112,7 @@ public class AppActivity extends ListActivity {
         super.onResume();
         //fillOptions();
        listView.setAdapter(new CustomArrayAdapter(BillEntriesCointener.billEntries, this));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -131,7 +133,7 @@ public class AppActivity extends ListActivity {
     private void onListItemClicked2(int i) {
 
 
-
+        monthsLeft = findViewById(R.id.monthsLeft);
         Intent intent = new Intent(AppActivity.this, BillViewActivity.class);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         //zmieniec quality//
@@ -147,9 +149,8 @@ public class AppActivity extends ListActivity {
         String purchaseDateString = simpleDateFormat.format(purchaseDate.getTime());
         String billName = BillEntriesCointener.billEntries.get(i).getBillName();
         int periodOfGuarantee = BillEntriesCointener.billEntries.get(i).getGuaranteeDuration();
-        //intent.putExtra("dateOfPurchase", receipt.expire);
         String guranteeUnit = BillEntriesCointener.billEntries.get(i).getGuaranteeUnit().toString();
-        //intent.putExtra("billName", receipt.name);
+
         intent.putExtra("nameOfTheShop", nameOfTheShop);
         intent.putExtra("billPhoto", byteArray);
         intent.putExtra("dateOfPurchase", purchaseDate.toString());
@@ -236,6 +237,25 @@ public class AppActivity extends ListActivity {
         months = Months.monthsBetween(start, end).getMonths();
 
         System.out.println("po przypisaniem month: " + months);
+        purchaseDate.add(Calendar.YEAR, -periodofOfGuarantee);
+
+
+        return String.valueOf(months);
+
+    }
+    public String calculateTheDate2(Calendar purchaseDate, int periodofOfGuarantee) {
+
+        int months = 0;
+
+        calendarCurrentDate = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        purchaseDate.add(Calendar.YEAR, periodofOfGuarantee);
+
+        DateTime start = new DateTime(calendarCurrentDate.getTime());
+        DateTime end= new DateTime(purchaseDate.getTime());
+
+        months = Months.monthsBetween(start, end).getMonths();
+
         purchaseDate.add(Calendar.YEAR, -periodofOfGuarantee);
 
 

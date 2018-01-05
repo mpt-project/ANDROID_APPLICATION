@@ -8,4 +8,7 @@
     <color name="image_border_end">#FF660000</color>
     <color name="image_border_center">#FFFF3333</color>
     <color name="image_border_color">#ffffff</color>
+    <color name="red">#ff3832</color>
+    <color name="orange">#ffa834</color>
+    <color name="green">#72bb53</color>
 </resources>

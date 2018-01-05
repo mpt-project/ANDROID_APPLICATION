@@ -21,6 +21,7 @@ public class BillEntry {
     private String year;
     private String day;
     private String month;
+    private String billEntryMonthsLeft;
 
     public String getShopName() {
         return shopName;
@@ -93,5 +94,14 @@ public class BillEntry {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+
+
+    public String getBillEntryMonthsLeft() {
+        return billEntryMonthsLeft;
+    }
+
+    public void setBillEntryMonthsLeft(String billEntryMonthsLeft) {
+        this.billEntryMonthsLeft = billEntryMonthsLeft;
     }
 }
