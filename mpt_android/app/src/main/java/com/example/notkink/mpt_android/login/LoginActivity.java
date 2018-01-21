@@ -1,62 +1,50 @@
-package com.example.notkink.mpt_android;
+package com.example.notkink.mpt_android.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.notkink.mpt_android.AppActivity;
+import com.example.notkink.mpt_android.R;
 import com.example.notkink.mpt_android.auth.AuthClient;
-import com.example.notkink.mpt_android.auth.User;
-import com.example.notkink.mpt_android.auth.UserRequest;
-import com.example.notkink.mpt_android.auth.UserResponse;
+import com.example.notkink.mpt_android.register.RegisterActivity;
+import com.example.notkink.mpt_android.toast.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginView {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -84,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private AuthClient authClient = new AuthClient();
+    private LoginPresenter presenter = new LoginPresenter();
+    private Toaster toaster = new Toaster();
 
 
     @Override
@@ -91,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
+        presenter.setView(this);
         // Set up the login form.
         Button sign_up = findViewById(R.id.sign_up);
         mEmailView = findViewById(R.id.email);
@@ -100,8 +91,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView = findViewById(R.id.password);
         boolean mCbShowPwd = false;
         onCheckedChanged(mCbShowPwd);
-
-
 
 
         mPasswordView.setOnEditorActionListener(new TextInputEditText.OnEditorActionListener() {
@@ -117,16 +106,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
 
-
         //Add onCheckedListener
-
 
 
         sign_up.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(LoginActivity.this, Pop.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
 
 
             }
@@ -136,13 +123,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                String email = mEmailView.getText().toString().trim(); //trim  removes spaces after word ("email "->"email")
+                String password = mPasswordView.getText().toString().trim();
+
+                presenter.attemptLogin(email, password);
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-
 
 
     }
@@ -200,29 +189,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void requestLogin(String email, String pass) {
-        showProgress(true);
-        authClient.loginUser(new UserRequest(new User(email, null, pass)))
-                .enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        showProgress(false);
-                        navigateToAppActivity();
-                    }
-
-
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "Error occurred: "+String.valueOf(t), Toast.LENGTH_SHORT).show();
-                        showProgress(false);
-                    }
-                });
-    }
 
     private void navigateToAppActivity() {
-        Intent intent = new Intent(this,AppActivity.class);
+        Intent intent = new Intent(this, AppActivity.class);
         startActivity(new Intent(LoginActivity.this, AppActivity.class));
     }
+
     private void attemptLogin() {
 
 //        navigateToAppActivity();
@@ -359,6 +331,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    @Override
+    public void showLoading() {
+        showProgress(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        showProgress(false);
+    }
+
+    @Override
+    public void onLoginSuccess(String message) {
+        System.out.println("onLoginSuccess: " + message);
+
+
+        AppActivity.start(this);
+
+    }
+
+
+    @Override
+    public void onLoginFailure(String message) {
+        System.err.println("onLoginFailure: " + message);
+        showToast(message);
+    }
+
 /*    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -434,6 +432,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    void showToast(String message) {
+        toaster.withContext(this).showToast(message);
     }
 }
 

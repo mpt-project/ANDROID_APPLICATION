@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Receipt implements Serializable {
 
     public static String TAG = Receipt.class.getSimpleName();
-    @SerializedName("id")
+    @SerializedName("receiptId")
     public String id;
 
     @SerializedName("name")
@@ -25,6 +25,6 @@ public class Receipt implements Serializable {
     @SerializedName("expire")
     public String expire;
 
-    @SerializedName("url")
+    @SerializedName("image")
     public String url;
 }

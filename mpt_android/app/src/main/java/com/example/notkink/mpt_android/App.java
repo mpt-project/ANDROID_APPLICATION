@@ -15,8 +15,7 @@ public class App extends Application {
 
 
     private BillPleaseApiClient billPleaseApiClient;
-    private Handler handler;
-
+    public String userId;
 
     public BillPleaseApiClient getBillPleaseApiClient() {
         return billPleaseApiClient;
@@ -31,8 +30,8 @@ public class App extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        billPleaseApiClient = new BillPleaseApiClient("http://192.168.1.9:3000/");
-        handler = new Handler(Looper.getMainLooper());
+        billPleaseApiClient = new BillPleaseApiClient("http://77.55.230.115:3000/");
+
     }
 
     public static App getApp() {

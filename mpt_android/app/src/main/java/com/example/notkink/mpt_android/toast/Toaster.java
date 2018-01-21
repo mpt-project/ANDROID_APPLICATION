@@ -1,5 +1,6 @@
 package com.example.notkink.mpt_android.toast;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ public class Toaster {
 
     private Handler handler;
 
+    private Context context;
+
     public Toaster() {
         handler = new Handler(Looper.getMainLooper());
     }
@@ -22,6 +25,7 @@ public class Toaster {
         if (isOnMainThread()) {
             showToastInUi(message);
         } else {
+            handler.removeCallbacksAndMessages(null);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -35,12 +39,23 @@ public class Toaster {
         if (toast != null) {
             toast.cancel();
         } else {
-            toast = Toast.makeText(App.getApp(), message, Toast.LENGTH_SHORT);
+            if (context!=null){
+                toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+
+            }else {
+                toast = Toast.makeText(App.getApp(), message, Toast.LENGTH_SHORT);
+            }
         }
         toast.show();
+
     }
 
     private boolean isOnMainThread() {
         return Looper.getMainLooper() == Looper.myLooper();
+    }
+
+    public Toaster withContext(Context context) {
+        this.context = context;
+        return this;
     }
 }

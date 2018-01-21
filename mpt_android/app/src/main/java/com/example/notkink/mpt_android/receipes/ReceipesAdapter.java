@@ -66,8 +66,7 @@ public class ReceipesAdapter extends ArrayAdapter<Receipt> {
 //        viewHolder.description.setText( entry.getPurchaseDate().toString());
 //        viewHolder.info.setOnClickListener(this);
         viewHolder.thumbnail.setTag(position);
-        Picasso.with(mContext).load(entry.url)
-                .into(viewHolder.thumbnail);
+        Picasso.with(mContext).load(entry.url).into(viewHolder.thumbnail);
         // Return the completed view to render on screen
         return convertView;
     }

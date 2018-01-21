@@ -17,22 +17,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.notkink.mpt_android.auth.AuthClient;
 import com.example.notkink.mpt_android.auth.Receipt;
 import com.example.notkink.mpt_android.receipes.ReceipesAdapter;
+import com.example.notkink.mpt_android.toast.Toaster;
+
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import org.joda.time.DateTime;
-import org.joda.time.DurationFieldType;
-import org.joda.time.Months;
-import org.joda.time.ReadableInstant;
-import org.joda.time.base.BaseSingleFieldPeriod;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +44,8 @@ public class AppActivity extends ListActivity {
     private Calendar calendarCurrentDate;
     private SimpleDateFormat simpleDateFormat;
     private ListView listView;
-    private AuthClient authClient = new AuthClient();
+
+    private Toaster toaster = new Toaster();
     private TextView monthsLeft;
 
 
@@ -64,10 +60,7 @@ public class AppActivity extends ListActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_app);
         listView = getListView();
-        //requestReceipts();
         ImageView imageView = findViewById(R.id.imageView);
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addNewBill);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,53 +70,91 @@ public class AppActivity extends ListActivity {
             }
         });
 
-
+        findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //refresh recipes
+                requestReceipts();
+            }
+        });
 
     }
 
-    private void requestReceipts() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestReceipts();
+    }
 
-        authClient.getRecipes().enqueue(new Callback<List<Receipt>>() {
-            @Override
-            public void onResponse(Call<List<Receipt>> call, Response<List<Receipt>> response) {
-                final List<Receipt> recipes = response.body();
-                Context context = AppActivity.this;
-                listView.setAdapter(new ReceipesAdapter(recipes, context));
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void requestReceipts() {
+        System.out.println("requestReceipts");
+        App.getApp()
+                .getBillPleaseApiClient()
+                .getReceipts()
+                .enqueue(new Callback<List<Receipt>>() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        //Receipt receipt = recipes.get(i);
+                    public void onResponse(Call<List<Receipt>> call, Response<List<Receipt>> response) {
+                        final List<Receipt> recipes = response.body();
+                        if (recipes == null) {
+                            showToast("Failed to load receipts, try again later");
+                            return;
+                        }
+
+                        if (recipes.isEmpty()) {
+                            showToast("NO RECEIPTS YET!!!!");
+                            return;
+                        }
+
+                        System.out.println("receipts size : " + recipes.size());
+                        Context context = AppActivity.this;
+                        listView.setAdapter(new ReceipesAdapter(recipes, context));
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                                Receipt receipt = recipes.get(i);
+                                showToast(receipt + " clicked!");
+
+                            }
+
+                        });
+
 
                     }
 
+                    @Override
+                    public void onFailure(Call<List<Receipt>> call, Throwable t) {
+                        String error = String.valueOf(t);
+                        System.err.println("error: " + error);
+                        showToast("Failed to load receipts: " + error);
+                    }
                 });
-            }
+    }
 
-            @Override
-            public void onFailure(Call<List<Receipt>> call, Throwable t) {
+    private void showToast(String message) {
+        toaster.withContext(this).showToast(message);
 
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //fillOptions();
-       listView.setAdapter(new CustomArrayAdapter(BillEntriesCointener.billEntries, this));
-       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setAdapter(new CustomArrayAdapter(BillEntriesCointener.billEntries, this));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 onListItemClicked2(i);
-           }
+            }
 
         });
-       findViewById(R.id.noEntriesMessage).setVisibility(View.GONE);
-       if (BillEntriesCointener.billEntries.isEmpty()) {
-           listView.setVisibility(View.GONE);
-           findViewById(R.id.noEntriesMessage).setVisibility(View.VISIBLE);
+        findViewById(R.id.noEntriesMessage).setVisibility(View.GONE);
+        if (BillEntriesCointener.billEntries.isEmpty()) {
+            listView.setVisibility(View.GONE);
+            findViewById(R.id.noEntriesMessage).setVisibility(View.VISIBLE);
         }
 
 
@@ -230,8 +261,8 @@ public class AppActivity extends ListActivity {
         purchaseDate.add(Calendar.YEAR, periodofOfGuarantee);
 
         DateTime start = new DateTime(calendarCurrentDate.getTime());
-        DateTime end= new DateTime(purchaseDate.getTime());
-        System.out.println("przed przypisaniem month: " +months);
+        DateTime end = new DateTime(purchaseDate.getTime());
+        System.out.println("przed przypisaniem month: " + months);
         System.out.println("start: " + start);
         System.out.println("end: " + end);
         months = Months.monthsBetween(start, end).getMonths();
@@ -243,6 +274,7 @@ public class AppActivity extends ListActivity {
         return String.valueOf(months);
 
     }
+
     public String calculateTheDate2(Calendar purchaseDate, int periodofOfGuarantee) {
 
         int months = 0;
@@ -252,7 +284,7 @@ public class AppActivity extends ListActivity {
         purchaseDate.add(Calendar.YEAR, periodofOfGuarantee);
 
         DateTime start = new DateTime(calendarCurrentDate.getTime());
-        DateTime end= new DateTime(purchaseDate.getTime());
+        DateTime end = new DateTime(purchaseDate.getTime());
 
         months = Months.monthsBetween(start, end).getMonths();
 
@@ -264,5 +296,11 @@ public class AppActivity extends ListActivity {
     }
 
 
+    public static void start(Context loginActivity) {
+        Intent intent = new Intent(loginActivity, AppActivity.class);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        loginActivity.startActivity(intent);
+    }
 }
 

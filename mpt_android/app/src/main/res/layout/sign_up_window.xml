@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/main_picture_layout"
     android:orientation="vertical">
 
@@ -8,55 +10,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
 
+
+        <EditText
+            android:id="@+id/register_name"
+            android:layout_width="225dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="50dp"
+            android:alpha="0.5"
+            android:background="#fff"
+            android:ems="10"
+            android:fontFamily="@font/lato_light"
+            android:hint="Wprowadź imię"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/register_email"
             android:layout_width="225dp"
             android:layout_height="40dp"
-            android:layout_above="@+id/password"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
             android:layout_marginLeft="70dp"
             android:layout_marginRight="70dp"
             android:alpha="0.5"
             android:background="#fff"
             android:ems="10"
+            android:fontFamily="@font/lato_light"
             android:hint="Wprowadź email"
-            android:inputType="textPassword"
-            android:fontFamily="@font/lato_light"/>
+            android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="225dp"
-        android:layout_height="40dp"
-        android:layout_alignStart="@+id/register_email"
-        android:layout_centerVertical="true"
-        android:alpha="0.5"
-        android:background="#fff"
-        android:ems="10"
-        android:hint="Wprowadź hasło"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/lato_light"/>
+        <EditText
+            android:id="@+id/register_password"
+            android:layout_width="225dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.5"
+            android:background="#fff"
+            android:ems="10"
+            android:fontFamily="@font/lato_light"
+            android:hint="Wprowadź hasło"
+            android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/confirm_password"
-        android:layout_width="225dp"
-        android:layout_height="40dp"
-        android:layout_alignStart="@+id/register_email"
-        android:layout_centerVertical="true"
-        android:alpha="0.5"
-        android:background="#fff"
-        android:ems="10"
-        android:hint="Potwierdź hasło"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/lato_light"/>
+        <EditText
+            android:id="@+id/register_password_repeated"
+            android:layout_width="225dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.5"
+            android:background="#fff"
+            android:ems="10"
+            android:fontFamily="@font/lato_light"
+            android:hint="Potwierdź hasło"
+            android:inputType="textPassword" />
 
 
         <Button
@@ -67,12 +79,20 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="70dp"
             android:layout_marginRight="70dp"
-            android:text="Zarejerstruj się"
+            android:layout_marginTop="20dp"
             android:background="@color/colorPrimary"
             android:drawableStart="@drawable/ic_person_add"
-            android:textColor="@color/textColorPrimary"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/lato_regular"/>
+            android:fontFamily="@font/lato_regular"
+            android:text="Zarejerstruj się"
+            android:textColor="@color/textColorPrimary" />
+
+        <ProgressBar
+            android:id="@+id/sign_up_window_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -1,5 +1,12 @@
 package com.example.notkink.mpt_android.upload;
 
+import com.example.notkink.mpt_android.auth.Receipt;
+import com.example.notkink.mpt_android.login.LoginRequest;
+import com.example.notkink.mpt_android.receipes.ReceiptsRequest;
+import com.example.notkink.mpt_android.register.RegisterRequest;
+
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -22,5 +29,14 @@ public interface BillPleaseApi {
     @POST("image/")
     Call<ResponseBody> uploadBase64Photo(@Body String photo);
 
+    @POST("register/")
+    Call<ResponseBody> registerUser(@Body RegisterRequest request);
+
+    @POST("login/")
+    Call<ResponseBody> loginUser(@Body LoginRequest request);
+
+
+    @POST("receipts/")
+    Call<List<Receipt>> getReceipts(@Body ReceiptsRequest request);
 
 }

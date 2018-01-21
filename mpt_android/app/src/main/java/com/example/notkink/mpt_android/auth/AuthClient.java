@@ -33,6 +33,7 @@ public class AuthClient {
     public Call<Receipt> getRecipes(String id){
         return api.getReceipes(id);
     }
+
     public Call<List<Receipt>> getRecipes(){
         return api.getReceipes();
     }

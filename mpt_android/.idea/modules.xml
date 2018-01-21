@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Notkink\Desktop\Chrome\BILL-master\mpt_android\app\app.iml" filepath="C:\Users\Notkink\Desktop\Chrome\BILL-master\mpt_android\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mpt_android.iml" filepath="$PROJECT_DIR$/mpt_android.iml" />
+      <module fileurl="file://C:\Users\Notkink\Desktop\Chrome\BILL-master\mpt_android\mpt_android.iml" filepath="C:\Users\Notkink\Desktop\Chrome\BILL-master\mpt_android\mpt_android.iml" />
     </modules>
   </component>
 </project>

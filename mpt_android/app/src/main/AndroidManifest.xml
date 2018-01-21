@@ -33,7 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:label="BILL PLEASE!"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.notkink.mpt_android.LoginActivity" />
+                android:value="com.example.notkink.mpt_android.login.LoginActivity" />
         </activity>
         <activity
             android:name=".addBill"
@@ -62,11 +62,11 @@
                 android:value="com.example.notkink.mpt_android.AppActivity" />
         </activity>
         <activity
-            android:name=".Pop"
+            android:name=".register.RegisterActivity"
             android:theme="@style/sign_up_theme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.notkink.mpt_android.LoginActivity" />
+                android:value="com.example.notkink.mpt_android.login.LoginActivity" />
 
         </activity>
         <activity android:name=".BillViewActivity">

@@ -10,24 +10,21 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_top_appactivity"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:textAppearance="@style/TextAppearance.FontPath"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        >
-
+        android:minHeight="?attr/actionBarSize"
+        android:textAppearance="@style/TextAppearance.FontPath">
 
         <TextView
-
-            android:textColor="@color/textColorPrimary"
+            android:id="@+id/toolbar_title_appactivity"
             style="@style/Toolbar"
             android:layout_width="wrap_content"
             android:layout_height="40sp"
-            android:text="Twoje Paragony"
             android:layout_gravity="center"
-            android:textSize="30sp"
-            android:id="@+id/toolbar_title_appactivity" />
+            android:text="Twoje Paragony"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="30sp" />
 
 
     </android.support.v7.widget.Toolbar>
@@ -47,11 +44,21 @@
         android:layout_height="80sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
         android:layout_marginBottom="50dp"
-        android:layout_marginEnd="50dp"
         android:src="@drawable/plus"
         app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"/>
+        app:fabSize="normal" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/refresh"
+        android:layout_width="80sp"
+        android:layout_height="80sp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16sp"
+        android:src="@drawable/refresh"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal" />
 
     <include layout="@layout/content_app" />
 
